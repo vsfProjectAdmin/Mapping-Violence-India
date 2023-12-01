@@ -1,0 +1,10 @@
+.leaflet-container {
+    height: 50vh;
+    width: 70%;
+    border-radius: 2rem;
+}
+
+.leaflet-tile-pane .leaflet-tile {
+    filter: invert(1) grayscale(1);
+}
+  

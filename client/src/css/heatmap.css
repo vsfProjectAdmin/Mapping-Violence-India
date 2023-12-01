@@ -1,0 +1,76 @@
+.react-calendar-heatmap .color-scale-0 {
+  fill: #f3f4f6;
+}
+.react-calendar-heatmap .color-scale-1 {
+  fill: #c2ecff;
+}
+.react-calendar-heatmap .color-scale-2 {
+  fill: #33beff;
+}
+.react-calendar-heatmap .color-scale-3 {
+  fill: #007db8;
+}
+.calendar-container {
+  color: black;
+}
+.legend {
+  display: flex;
+  flex-direction: row;
+  margin-left: 5vw;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.legend-square {
+  width: 25px;
+  height: 25px;
+  background-color: #1e90ff; /* Change the color as needed */
+  color: black; /* Text color inside the square */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  border-radius: 4px;
+  margin-right: 5px;
+}
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.labelOfYear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.legend-square-0 {
+  background-color: #f3f4f6;
+}
+.legend-square-1 {
+  background-color: #c2ecff;
+}
+.legend-square-2 {
+  background-color: #33beff;
+}
+.legend-square-3 {
+  background-color: #007db8;
+}
+
+/*set about week label and heat map*/
+.grid-container {
+  display: grid;
+  grid-template-columns: 0.5fr 3fr;
+  align-items: center;
+  margin-left: -100px;
+}
+.dayLabels-container {
+  height: 100px;
+  font-size: 13px;
+  color: gray;
+  margin-left: 120px;
+}
