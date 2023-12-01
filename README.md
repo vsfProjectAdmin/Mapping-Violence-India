@@ -63,7 +63,19 @@ with your database credentials.
     - Load the dump into the database using the command: `source path/to/your/dumpfile.sql;`
         - In the MySQL command line, this can be done by navigating to the directory containing the dump file and running the command.
         - If using a GUI tool, there might be an option to import a database from a file. Navigate through the tool's menu to find this option.
-## Key Components
+## Key Components (Client)
+
+### CategroyBarChart.js && StateBarChart.js
+
+1. **Purpose**: The component is designed for visualizing incident counts for different `categories`(`states`) per month using the Recharts library. The purpose of importing `categories`(`states`) in `CategroyBarChart.js`(`StateBarChart.js`) component is to use this constant as a source of dynamic data. 
+
+2. **recharts library**: Recharts is a charting library for React that simplifies the process of creating charts and graphs. BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer are used to build a responsive bar chart.
+
+3. **moment library**: The format method of the moment library is used here to ensure the consistency of the date and is not affected by month boundaries. This avoids counting errors when the event occurs on the last day of the previous month or the first day of the next month.
+
+4. **Static Bar Colors(CategroyBarChart.js)**: For each `category`, the `<Bar>` component's fill prop is set to a specific color value based on the category. and these colors don't change dynamically based on the content or order of the data.
+
+5. **Dynamic Bar Colors(StateBarChart.js)**: For each `state`, the `<Bar>` component's fill prop is set to the result of calling `getRandomColor()`. This means each time the chart is refreshed the colors of the bars representing different states will be different.
 
 ### Contact.js
 
@@ -73,18 +85,82 @@ with your database credentials.
     
 3. **No Backend Required**: This setup eliminates the need for backend email handling, adding simplicity and security, as sensitive email details are not exposed in the frontend code.
 
+### HeatMapConstructor.js && Heatmap.js 
+
+1. **Purpose**: The `HeatMapConstructor.js` file defines a React component named InteractiveHeatmap. This component utilizes the `react-calendar-heatmap` library to create an interactive heatmap visualization. The purpose is to encapsulate the logic for rendering the heatmap, handling user interactions (click, hover), and displaying tooltips. `Heatmap.js` imports InteractiveHeatmap, processes incident data, and uses it to render the overall heatmap visualization with additional UI elements.
+
+2. **InteractiveHeatmap functional component**:
+    - `values`: Data points for the heatmap.
+    - `startDate` and `endDate`: Define the range of the calendar heatmap.
+    - `onClick`, `onMouseOver`, `onMouseLeave`: Callback functions for handling user interactions.
+    - `classForValue`: A function that determines the CSS class for a given value, allowing for custom styling.
+    - `tooltipDataAttrs`: Additional data attributes for tooltip customization.
+
+3. **CODE: Line 83-86 and Line 102-108**: This code creates an array named `EveryRecentYear` that contains a sequence of years starting from 2022 up to the current year. The array is then used to populate a `<select>` dropdown in a React component. if current year is 2025, `EveryRecentYear` would be an array containing `[2022, 2023, 2024, 2025]`. The array is then used to populate a `<select>` dropdown.
+
+```js
+//Line 83-86
+const EveryRecentYear = Array.from(
+    { length: currentYear - 2021 }, 
+    (_, index) => currentYear - index
+);
+...
+//Line 102-108
+<select value={selectedYear} onChange={handleYearChange}>
+    {EveryRecentYear.map((year) => (
+        <option key={year} value={year}>
+        {year}
+        </option>
+    ))}
+</select> 
+```
+
+### Home.js
+
+1. **Purpose**: The Home component responsible for rendering various visualizations related to religious violence incidents in India.
+    - Map: A geographical map visualization `<Map />` that likely displays the geographical distribution of incidents.
+    - Heatmap: A calendar heatmap visualization `<Heatmap />` that likely shows a temporal pattern of incidents.
+    - Category Bar Chart: A bar chart visualization `<CategoryBarChart />` that likely displays incident counts by category.
+    - State Bar Chart: A bar chart visualization `<StateBarChart />` that likely shows incident counts by state.
+
+2. **Code Comments**: The use of conditional rendering `{incidents ? (...) : (...)}` ensures that the visualizations are only rendered once the incident data is available. Otherwise the state will be loaded. 
+
+### IncidentForm.js && SucessModel.js 
+
+1. **Purpose**: This is an incident reporting form. The form is designed to collect information about various incidents, including details such as description, date, category, and subcategory... Users can submit incident reports through this form, and the data is sent to an API (database).
+
+2. **Formik and Yup**: Formik Library is used for managing the state and behavior of the form, and Yup Library is used for defining the validation rules for the form fields.
+
+3. **Dynamic Dropdowns**: The form includes dynamic dropdowns for selecting incident categories and subcategories based on the chosen category. We need import `new_states_api` and different subcategories from `Constants.js`.
+
+4. **Conditional Validation**: The form includes conditional validation for the source field, ensuring it is required only when self-reporting.
+
+5. **Self-Reporting Option**: Users can indicate if they are self-reporting an incident, which triggers additional form fields related to the source of the report. Source and Email share a database column name called `INCI_SOURCE`.
+
+6. **Sucess Model Feedback**: `SucessModel.js` is displayed upon successful submission of an incident report.
+
 ### Map.js 
 
-**Imports and Setup**:
+1. **Imports and Setup**:
     - The component imports React, Leaflet (a JavaScript library for interactive maps), and `react-leaflet` components.
     - It also imports a custom marker icon and a CSS file for styling.
-**Map Component**:
+2. **Map Component**:
     - `Map` is a functional React component that takes `incidents` as a prop, which is an array of incident data.
     - The map is centered on coordinates [20.5937, 78.9629] (somewhere in India) with specified max bounds and a zoom level.
-**Custom Marker Icon**:
+3. **Custom Marker Icon**:
     - A custom icon for markers is created using Leaflet's `L.Icon`, with the icon URL pointing to the imported `markerIcon`.
 
-### Backend FindCoords.js
+### Method.js
+
+1. **Purpose**: The component will inform users of the Violence Every Square Foot project's approach, instruct users on how to contribute to the event.
+
+### Nav.js
+
+1. **Purpose**: The Nav component shows a navigation bar with a company logo and links to different routes. It uses the Link component from `react-router-dom` for navigation. The navigation bar is designed to be responsive.
+
+## Key Components (Server)
+
+### FindCoords.js
 
 This JavaScript module implements a "3-tier fallback" strategy for obtaining geographical coordinates for incident data, with the aim of ensuring that coordinates are always provided, even if precise data is unavailable. Here's a concise overview:
 
@@ -94,7 +170,7 @@ This JavaScript module implements a "3-tier fallback" strategy for obtaining geo
     
 3. **Second Fallback - Default Coordinates**: In cases where state coordinates are also unavailable, it resorts to a default set of coordinates, applying a larger random offset for variability.
 
-### Backend FormatDataController.js
+### FormatDataController.js
 
 This code defines a development-only Express router endpoint, `/processIncidents`, designed to process a large amount of incident data lacking coordinates. It follows these steps:
 
@@ -104,3 +180,4 @@ This code defines a development-only Express router endpoint, `/processIncidents
 4. **Batch Processing**: Incidents are processed in intervals (1 second apart) to manage the load, suitable for large datasets.
 
 This endpoint's primary function is to efficiently assign and update coordinates for incidents in a development environment.
+
