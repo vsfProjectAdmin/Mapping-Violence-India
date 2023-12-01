@@ -1,6 +1,4 @@
-import React from 'react'
-
-function Method() {
+export default function Method() {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-5">
     <div className="bg-white p-10 rounded-lg shadow-lg max-w-4xl">
@@ -60,5 +58,3 @@ function Method() {
   </div>
   )
 }
-
-export default Method

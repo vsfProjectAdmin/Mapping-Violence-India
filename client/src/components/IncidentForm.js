@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage, useFormikContext } from "formik";
 import * as Yup from "yup";
-import SuccessModal from "./SuccessModal";
+import SuccessModal from "./SuccessModel";
 
 import {
   new_states_api,
@@ -70,7 +70,7 @@ export default function CreateReport() {
           return (
             !!value ||
             this.createError({
-              message: "Field is required when self-reporting",
+              message: "Email is required when self-reporting",
             })
           );
         }
@@ -97,7 +97,7 @@ export default function CreateReport() {
     resetForm();
   };
 
-  const closeModal = () => {
+  const closeModel = () => {
     // Close the modal and reset the state
     setIsModalOpen(false);
   };
@@ -198,30 +198,32 @@ export default function CreateReport() {
             }`}
           />
         </div>
-        <div className="flex flex-col items-center ml-4">
-          <label
-            htmlFor="selfReporting"
-            className="mb-2 block text-sm font-medium text-font"
-          >
-            Self Reporting
-          </label>
-          <Field
-            type="checkbox"
-            id="selfReporting"
-            name="SELF_REPORTING"
-            className="h-7 w-7 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
-            onChange={(e) => {
-              setFieldValue("SELF_REPORTING", e.target.checked);
-              if (e.target.checked) {
-                setFieldValue("INCI_SOURCE", "");
-              }
-            }}
-          />
+        <div className="ml-4">
+          <div className="flex flex-col items-center">
+            <label
+              htmlFor="selfReporting"
+              className="mb-2 block text-sm font-medium text-font"
+            >
+              Self Reporting
+            </label>
+            <Field
+              type="checkbox"
+              id="selfReporting"
+              name="SELF_REPORTING"
+              className="h-7 w-7 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+              onChange={(e) => {
+                setFieldValue("SELF_REPORTING", e.target.checked);
+                if (e.target.checked) {
+                  setFieldValue("INCI_SOURCE", "");
+                }
+              }}
+            />
+          </div>
         </div>
-        <div className="flex-1">
+        <div className="flex-1 ml-4">
           <label
             htmlFor="inciSourceEmail"
-            className={` text-sm font-medium text-font ${
+            className={`text-sm font-medium text-font ${
               values.SELF_REPORTING ? "block" : "hidden"
             }`}
           >
@@ -231,14 +233,14 @@ export default function CreateReport() {
             id="inciSourceEmail"
             name="INCI_SOURCE"
             placeholder="Enter Email..."
-            // disabled={values.SELF_REPORTING}
-            className={`mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 }`}
-            style={{ display: values.SELF_REPORTING ? "block" : "none" }}
+            className={`mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 ${
+              values.SELF_REPORTING ? "block" : "hidden"
+            }`}
           />
           <ErrorMessage
             name="INCI_SOURCE"
             component="span"
-            className="text-red-500 text-xs mt-1" // Added the text-red-500 class
+            className="text-red-500 text-xs mt-1"
           />
         </div>
       </div>
@@ -365,13 +367,7 @@ export default function CreateReport() {
             Submit Incident Report
           </button>
 
-          {/* {isSubmitted && (
-            <p className="text-green-500 mt-2">
-              Form submitted successfully! Thank you for your report.
-            </p>
-          )} */}
-
-          {isModalOpen && <SuccessModal closeModal={closeModal} />}
+          {isModalOpen && <SuccessModal closeModel={closeModel} />}
         </Form>
       </Formik>
     </div>

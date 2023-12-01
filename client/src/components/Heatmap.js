@@ -79,8 +79,8 @@ const Heatmap = ({ incidents }) => {
   const currentYear = new Date().getFullYear(); //Code to get the year of the current date, avoid users from filling in the wrong date(>current date)
   const [selectedYear, setSelectedYear] = useState(currentYear);
 
-  // Create an array of the last three years
-  const lastThreeYears = Array.from(
+  // Create an array from 2022 year - current year
+  const EveryRecentYear = Array.from(
     { length: currentYear - 2021 }, //
     (_, index) => currentYear - index
   );
@@ -100,7 +100,7 @@ const Heatmap = ({ incidents }) => {
         <div className="labelOfYear">
           <label>Daily incidents in</label>
           <select value={selectedYear} onChange={handleYearChange}>
-            {lastThreeYears.map((year) => (
+            {EveryRecentYear.map((year) => (
               <option key={year} value={year}>
                 {year}
               </option>

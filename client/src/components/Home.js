@@ -58,22 +58,6 @@ function Home() {
           <p>Loading State Bar Chart...</p>
         )}
       </div>
-      {/* <div>
-      <h2 className="text-xl font-semibold mb-2">Resources:</h2>
-      <ul className="list-disc pl-5">
-        <li><a href="#" className="text-blue-600">Report 1</a></li>
-        <li><a href="#" className="text-blue-600">Article 2</a></li>
-        <li><a href="#" className="text-blue-600">Data 3</a></li>
-      </ul>
-    </div>
-    <div>
-      <h2 className="text-xl font-semibold mb-2">Method:</h2>
-      <ul className="list-disc pl-5">
-        <li><a href="#" className="text-blue-600">Report 1</a></li>
-        <li><a href="#" className="text-blue-600">Article 2</a></li>
-        <li><a href="#" className="text-blue-600">Data 3</a></li>
-      </ul>
-    </div> */}
     </div>
   );
 }

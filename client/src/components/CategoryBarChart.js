@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import moment from "moment";
 import {
   BarChart,
   Bar,
@@ -18,12 +19,9 @@ const CategoryBarChart = ({ incidents }) => {
       const counts = {};
 
       incidents.forEach((incident) => {
-        const incidentDate = new Date(incident.INCI_DATE);
-        const yearMonth = `${incidentDate.getFullYear()}-${(
-          incidentDate.getMonth() + 1
-        )
-          .toString()
-          .padStart(2, "0")}`;
+        const incidentDate = moment(incident.INCI_DATE);
+
+        const yearMonth = incidentDate.format("YYYY-MM");
 
         if (!counts[yearMonth]) {
           counts[yearMonth] = {};
@@ -43,19 +41,16 @@ const CategoryBarChart = ({ incidents }) => {
   }, [incidents]);
   // console.log(categoryCounts);
 
-  // Transform the counts into the desired format
-  const resultArray = Object.entries(categoryCounts).map(
-    ([months, categories]) => {
+  // Transform the counts into the desired format and sort by month in ascending order
+  const resultArray = Object.entries(categoryCounts)
+    .map(([months, categories]) => {
       const result = { months };
       Object.entries(categories).forEach(([category, count]) => {
         result[category] = count;
       });
       return result;
-    }
-  );
-  console.log(resultArray);
-  // const months = resultArray.map((entry) => entry.months);
-  // console.log(months);
+    })
+    .sort((a, b) => new Date(a.months) - new Date(b.months));
 
   return (
     <ResponsiveContainer width="100%" minWidth={300} minHeight={500}>
@@ -63,7 +58,34 @@ const CategoryBarChart = ({ incidents }) => {
         <CartesianGrid />
         <XAxis dataKey="months" />
         <YAxis />
-        <Tooltip />
+        <Tooltip
+          content={({ label, payload }) => {
+            const sum = payload.reduce((acc, entry) => acc + entry.value, 0);
+            return (
+              <div
+                className="custom-tooltip"
+                style={{ backgroundColor: "white", padding: "8px" }}
+              >
+                <p style={{ color: "black" }}>{label}</p>
+                {payload.map((entry, index) => (
+                  <p key={index}>
+                    <span
+                      style={{
+                        color:
+                          entry.dataKey === "months" ? "black" : entry.fill,
+                      }}
+                    >
+                      {`${entry.name}: ${entry.value}`}
+                    </span>
+                  </p>
+                ))}
+                <p style={{ color: "black", fontWeight: "bold" }}>
+                  Total: {sum}
+                </p>
+              </div>
+            );
+          }}
+        />
         <Legend />
         {categories.map((c) => {
           if (c === categories[0]) {
